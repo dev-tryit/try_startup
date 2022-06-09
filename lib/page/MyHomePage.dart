@@ -12,19 +12,30 @@ class MyHomePage extends StatelessWidget {
     return Column(
       children: [
         ElevatedButton(
-            onPressed: () {
-              DocumentReference dRef = cRef.doc("id123");
-              dRef.set({"test": "test"});
-            },
-            child: Text("다큐먼트 만들기")),
+          onPressed: () {
+            DocumentReference dRef = cRef.doc("id123");
+            dRef.set({"test": "test"});
+          },
+          child: Text("다큐먼트 만들기"),
+        ),
         ElevatedButton(
-            onPressed: () {
-              DocumentReference dRef = cRef.doc("id123");
-              dRef.get().then((value) {
-                print(value.data());
-              });
-            },
-            child: Text("다큐먼트 얻기")),
+          onPressed: () {
+            DocumentReference dRef = cRef.doc("id123");
+            dRef.get().then((value) {
+              print(value.data());
+            });
+          },
+          child: Text("다큐먼트 얻기"),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Query query = cRef.where("test",isEqualTo: "test");
+            query.get().then((value) {
+              print(value.docs.map((e) => e.data()).toList());
+            });
+          },
+          child: Text("다큐먼트 쿼리하기"),
+        ),
       ],
     );
   }
