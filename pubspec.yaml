@@ -38,6 +38,8 @@ dependencies:
   cloud_firestore: ^3.1.17 #선택
   firebase_auth: ^3.3.19 #선택
 
+  modal_bottom_sheet: ^2.0.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
