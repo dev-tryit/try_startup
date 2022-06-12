@@ -39,6 +39,7 @@ dependencies:
   firebase_auth: ^3.3.19 #선택
 
   modal_bottom_sheet: ^2.0.1
+  animate_do: ^2.1.0
 
 dev_dependencies:
   flutter_test:

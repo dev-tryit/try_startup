@@ -55,13 +55,6 @@ class CityPage extends StatelessWidget {
   }
 
   void createBottomSheet() {
-    showMaterialModalBottomSheet(
-      expand: true,
-      enableDrag: true,
-      bounce: true,
-      context: context,
-      barrierColor: Colors.transparent,
-      builder: (context) => BouncingModalBottomSheet(),
-    );
+    BouncingModalBottomSheet().show(context);
   }
 }
