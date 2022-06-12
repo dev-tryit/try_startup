@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../_common/animation/FastBouncingWidget.dart';
+import '../_common/animation/FastBouncingEffect.dart';
+import '../_common/widget/bottomSheet/BouncingModalBottomSheet.dart';
 import '../repository/CityRepository.dart';
 
 class CityPage extends StatelessWidget {
   CityRepository get r => CityRepository.me;
   late BuildContext context;
-  late AnimationController bounceAnimateController;
 
   CityPage({Key? key}) : super(key: key);
 
@@ -61,29 +61,7 @@ class CityPage extends StatelessWidget {
       bounce: true,
       context: context,
       barrierColor: Colors.transparent,
-      builder: (context) {
-        return Column(
-          children: [
-            Expanded(child: GestureDetector(
-              onTap: () {
-                bounceAnimateController.reset();
-                bounceAnimateController.forward().then((value) {
-                  bounceAnimateController.reverse();
-                });
-                print("click");
-              },
-            )),
-            FastBouncingWidget(
-              animationControllerSender: (controller) =>
-                  bounceAnimateController = controller,
-              child: Container(
-                height: 100,
-                color: Colors.red,
-              ),
-            ),
-          ],
-        );
-      },
+      builder: (context) => BouncingModalBottomSheet(),
     );
   }
 }
