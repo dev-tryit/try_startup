@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:try_startup/_common/firebase/firestore/FirebaseRepository.dart';
 
 class CityRepository extends FirebaseRepository<City> {
-  CityRepository()
+  static final CityRepository me = CityRepository._internal();
+
+  CityRepository._internal()
       : super(
           collectionName: "City",
           fromFirestore: City.fromFirestore,
