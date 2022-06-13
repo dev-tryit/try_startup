@@ -5,11 +5,14 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../animation/FastBouncingEffect.dart';
 
 class BouncingModalBottomSheet extends StatelessWidget {
-  Widget child;
+  Widget Function(Function popFunction) builder;
   BuildContext parentContext;
   late void Function() fastBouncingAnimator;
+  late AnimationController animationController;
+  late BuildContext context;
 
-  BouncingModalBottomSheet(this.parentContext, {Key? key, required this.child})
+  BouncingModalBottomSheet(this.parentContext,
+      {Key? key, required this.builder})
       : super(key: key);
 
   void show() {
@@ -25,6 +28,7 @@ class BouncingModalBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    this.context = context;
     return ColoredBox(
       color: Colors.black.withOpacity(0.35),
       child: Column(
@@ -36,14 +40,22 @@ class BouncingModalBottomSheet extends StatelessWidget {
           )),
           SlideInUp(
             duration: const Duration(milliseconds: 200),
+            controller: (animationController) =>
+                this.animationController = animationController,
             child: FastBouncingEffect(
               initAnimator: (fastBouncingAnimator) =>
                   this.fastBouncingAnimator = fastBouncingAnimator,
-              child: child,
+              child: builder(popFunction),
             ),
           ),
         ],
       ),
     );
+  }
+
+  void popFunction() {
+    animationController.reverse().then((value) {
+      Navigator.pop(context);
+    });
   }
 }

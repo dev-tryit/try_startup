@@ -57,11 +57,15 @@ class CityPage extends StatelessWidget {
   void createBottomSheet() {
     BouncingModalBottomSheet(
       context,
-      child: AlertBottomSheet(
-        alertMessageText: '아이디와 비밀번호가 일치하지 않습니다.',
-        alertButtonText: '확인',
-        onPressed: () {},
-      ),
+      builder: (popFunction) {
+        return AlertBottomSheet(
+          alertMessageText: '아이디와 비밀번호가 일치하지 않습니다.',
+          alertButtonText: '확인',
+          onPressed: () {
+            popFunction();
+          },
+        );
+      },
     ).show();
   }
 }
@@ -97,7 +101,8 @@ class AlertBottomSheet extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             child: OutlinedButton(
-              style: OutlinedButton.styleFrom(padding: const EdgeInsets.all(20)),
+              style:
+                  OutlinedButton.styleFrom(padding: const EdgeInsets.all(20)),
               onPressed: onPressed,
               child: Text(
                 alertButtonText,
