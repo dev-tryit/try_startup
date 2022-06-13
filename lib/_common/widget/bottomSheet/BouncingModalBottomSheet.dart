@@ -5,15 +5,18 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../animation/FastBouncingEffect.dart';
 
 class BouncingModalBottomSheet extends StatelessWidget {
+  Widget child;
+  BuildContext parentContext;
   late void Function() fastBouncingAnimator;
 
-  BouncingModalBottomSheet({Key? key}) : super(key: key);
+  BouncingModalBottomSheet(this.parentContext, {Key? key, required this.child})
+      : super(key: key);
 
-  void show(BuildContext context) {
+  void show() {
     showMaterialModalBottomSheet(
       enableDrag: false,
       bounce: false,
-      context: context,
+      context: parentContext,
       backgroundColor: Colors.transparent,
       duration: Duration.zero,
       builder: (context) => this,
@@ -36,10 +39,7 @@ class BouncingModalBottomSheet extends StatelessWidget {
             child: FastBouncingEffect(
               initAnimator: (fastBouncingAnimator) =>
                   this.fastBouncingAnimator = fastBouncingAnimator,
-              child: Container(
-                height: 100,
-                color: Colors.red,
-              ),
+              child: child,
             ),
           ),
         ],

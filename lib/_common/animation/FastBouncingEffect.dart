@@ -35,7 +35,7 @@ class _FastBouncingEffectState extends State<FastBouncingEffect>
       });
     widget.initAnimator(play);
 
-    _tween = Tween(begin: 1.0, end: 0.8).animate(
+    _tween = Tween(begin: 1.0, end: 1.06).animate(
       CurvedAnimation(
         parent: _controller,
         curve: const Interval(
@@ -62,7 +62,6 @@ class _FastBouncingEffectState extends State<FastBouncingEffect>
   }
 
   void play() {
-    _controller.reset();
     _controller.forward().then((value) {
       _controller.reverse();
     });
