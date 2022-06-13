@@ -1,6 +1,17 @@
 
 import 'package:flutter/material.dart';
 
+/*
+    BouncingModalBottomEffect.apply(context, builder: (popFunction) {
+      return AlertBottomSheet(
+        alertMessageText: '아이디와 비밀번호가 일치하지 않습니다.',
+        alertButtonText: '확인',
+        onPressed: () {
+          popFunction();
+        },
+      );
+    });
+ */
 class AlertBottomSheet extends StatelessWidget {
   String alertMessageText;
   String alertButtonText;

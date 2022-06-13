@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../_common/flutter/bottomSheet/AlertBottomSheet.dart';
+import '../_common/flutter/bottomSheet/InputBottomSheet.dart';
 import '../_common/flutter/effect/BouncingModalBottomEffect.dart';
 import '../repository/CityRepository.dart';
+import '../util/SnackBarUtil.dart';
 
 class CityPage extends StatelessWidget {
   CityRepository get r => CityRepository.me;
@@ -54,13 +56,43 @@ class CityPage extends StatelessWidget {
   }
 
   void createBottomSheet() {
+    final TextEditingController titleController = TextEditingController();
+    final TextEditingController keywordController = TextEditingController();
+
     BouncingModalBottomEffect.apply(context, builder: (popFunction) {
-      return AlertBottomSheet(
-        alertMessageText: '아이디와 비밀번호가 일치하지 않습니다.',
-        alertButtonText: '확인',
-        onPressed: () {
-          popFunction();
+      return InputBottomSheet(
+        title: "${r.collectionName} 요소 추가",
+        buttonStr: '추가',
+        onAdd: (void Function(String) setErrorMessage) {
+          // TODO: BOttomSheet 넣기.
+          // createBottomSheet();
         },
+        children: [
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            dense: true,
+            minLeadingWidth: 100,
+            leading: const Text("분류 이름",
+                style: TextStyle(fontSize: 12.5)),
+            title: TextField(
+              controller: titleController,
+              decoration: const InputDecoration(isDense: true),
+            ),
+          ),
+          const SizedBox(height: 10),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            dense: true,
+            minLeadingWidth: 100,
+            leading: const Text("분류 기준 텍스트",
+                style: TextStyle(fontSize: 12.5)),
+            title: TextField(
+              controller: keywordController,
+              decoration: const InputDecoration(isDense: true),
+            ),
+          ),
+          const SizedBox(height: 10),
+        ],
       );
     });
   }
