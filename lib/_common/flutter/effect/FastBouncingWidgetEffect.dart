@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class FastBouncingEffect extends StatefulWidget {
+class FastBouncingWidgetEffect extends StatefulWidget {
   final Widget? child;
   final Duration duration;
   final void Function(void Function() fastBouncingAnimator) initAnimator;
 
-  const FastBouncingEffect({
+  const FastBouncingWidgetEffect({
     Key? key,
     this.child,
     this.duration = const Duration(milliseconds: 200),
@@ -14,11 +14,11 @@ class FastBouncingEffect extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    return _FastBouncingEffectState();
+    return _FastBouncingWidgetEffectState();
   }
 }
 
-class _FastBouncingEffectState extends State<FastBouncingEffect>
+class _FastBouncingWidgetEffectState extends State<FastBouncingWidgetEffect>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation _tween;

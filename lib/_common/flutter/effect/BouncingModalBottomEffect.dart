@@ -2,33 +2,29 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../../animation/FastBouncingEffect.dart';
+import 'FastBouncingWidgetEffect.dart';
 
-class BouncingModalBottomSheet extends StatelessWidget {
+class BouncingModalBottomEffect extends StatelessWidget {
   Widget Function(Function popFunction) builder;
-  BuildContext parentContext;
   late void Function() fastBouncingAnimator;
   late AnimationController animationController;
-  late BuildContext context;
 
-  BouncingModalBottomSheet(this.parentContext,
-      {Key? key, required this.builder})
-      : super(key: key);
+  BouncingModalBottomEffect(this.builder, {Key? key}) : super(key: key);
 
-  void show() {
+  static void apply(
+      BuildContext context, {required Widget Function(Function popFunction) builder}) {
     showMaterialModalBottomSheet(
       enableDrag: false,
       bounce: false,
-      context: parentContext,
+      context: context,
       backgroundColor: Colors.transparent,
       duration: Duration.zero,
-      builder: (context) => this,
+      builder: (context) => BouncingModalBottomEffect(builder),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    this.context = context;
     return ColoredBox(
       color: Colors.black.withOpacity(0.35),
       child: Column(
@@ -42,10 +38,10 @@ class BouncingModalBottomSheet extends StatelessWidget {
             duration: const Duration(milliseconds: 200),
             controller: (animationController) =>
                 this.animationController = animationController,
-            child: FastBouncingEffect(
+            child: FastBouncingWidgetEffect(
               initAnimator: (fastBouncingAnimator) =>
                   this.fastBouncingAnimator = fastBouncingAnimator,
-              child: builder(popFunction),
+              child: builder(() => popFunction(context)),
             ),
           ),
         ],
@@ -53,7 +49,7 @@ class BouncingModalBottomSheet extends StatelessWidget {
     );
   }
 
-  void popFunction() {
+  void popFunction(BuildContext context) {
     animationController.reverse().then((value) {
       Navigator.pop(context);
     });
