@@ -1,33 +1,30 @@
 import 'package:flutter/material.dart';
 
-class BoolController {
-  bool value;
+import '../../controller/ValueController.dart';
+import 'leading/LeadingTitle.dart';
 
-  BoolController(this.value);
-}
-
-class BoolListTile extends StatefulWidget {
-  final BoolController controller;
+class SwitchInput extends StatefulWidget {
+  final ValueController<bool> controller;
   final String titleText;
 
-  const BoolListTile({
+  const SwitchInput({
     Key? key,
     required this.titleText,
     required this.controller,
   }) : super(key: key);
 
   @override
-  State<BoolListTile> createState() => _BoolListTileState();
+  State<SwitchInput> createState() => _SwitchInputState();
 }
 
-class _BoolListTileState extends State<BoolListTile> {
+class _SwitchInputState extends State<SwitchInput> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       dense: true,
       minLeadingWidth: 100,
-      leading: Text(widget.titleText, style: const TextStyle(fontSize: 12.5)),
+      leading: LeadingTitle(widget.titleText),
       trailing: Switch(
         value: widget.controller.value,
         onChanged: (bool value) {

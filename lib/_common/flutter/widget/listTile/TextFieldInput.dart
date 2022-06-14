@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:try_startup/_common/flutter/controller/ValueController.dart';
 
-class StringListTile extends StatelessWidget {
-  final TextEditingController controller;
+import 'leading/LeadingTitle.dart';
+
+class TextFieldInput extends StatelessWidget {
+  final ValueController<String> controller;
   final String titleText;
 
-  const StringListTile({
+  const TextFieldInput({
     Key? key,
     required this.titleText,
     required this.controller,
@@ -16,10 +19,13 @@ class StringListTile extends StatelessWidget {
       contentPadding: EdgeInsets.zero,
       dense: true,
       minLeadingWidth: 100,
-      leading: Text(titleText, style: const TextStyle(fontSize: 12.5)),
+      leading: LeadingTitle(titleText),
       title: TextField(
-        controller: controller,
         decoration: const InputDecoration(isDense: true),
+        textAlign: TextAlign.end,
+        onChanged: (value){
+          controller.value = value;
+        },
       ),
     );
   }
