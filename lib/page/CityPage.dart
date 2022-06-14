@@ -3,6 +3,8 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../_common/flutter/bottomSheet/AlertBottomSheet.dart';
 import '../_common/flutter/bottomSheet/InputBottomSheet.dart';
 import '../_common/flutter/effect/BouncingModalBottomEffect.dart';
+import '../_common/flutter/widget/BoolListTile.dart';
+import '../_common/flutter/widget/StringListTile.dart';
 import '../repository/CityRepository.dart';
 import '../util/SnackBarUtil.dart';
 
@@ -56,8 +58,10 @@ class CityPage extends StatelessWidget {
   }
 
   void createBottomSheet() {
-    final TextEditingController titleController = TextEditingController();
-    final TextEditingController keywordController = TextEditingController();
+    final nameController = TextEditingController();
+    final stateController = TextEditingController();
+    final countryController = TextEditingController();
+    final capitalController = BoolController(false);
 
     BouncingModalBottomEffect.apply(context, builder: (popFunction) {
       return InputBottomSheet(
@@ -67,29 +71,13 @@ class CityPage extends StatelessWidget {
 
         },
         children: [
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            dense: true,
-            minLeadingWidth: 100,
-            leading: const Text("분류 이름",
-                style: TextStyle(fontSize: 12.5)),
-            title: TextField(
-              controller: titleController,
-              decoration: const InputDecoration(isDense: true),
-            ),
-          ),
+          StringListTile(titleText:"도시 이름", controller: nameController),
           const SizedBox(height: 10),
-          ListTile(
-            contentPadding: EdgeInsets.zero,
-            dense: true,
-            minLeadingWidth: 100,
-            leading: const Text("분류 기준 텍스트",
-                style: TextStyle(fontSize: 12.5)),
-            title: TextField(
-              controller: keywordController,
-              decoration: const InputDecoration(isDense: true),
-            ),
-          ),
+          StringListTile(titleText:"상태", controller: stateController),
+          const SizedBox(height: 10),
+          StringListTile(titleText:"나라 이름", controller: countryController),
+          const SizedBox(height: 10),
+          BoolListTile(titleText:"수도인지?", controller: capitalController),
           const SizedBox(height: 10),
         ],
       );
