@@ -6,6 +6,7 @@ import '../_common/flutter/bottomSheet/AlertBottomSheet.dart';
 import '../_common/flutter/bottomSheet/InputBottomSheet.dart';
 import '../_common/flutter/controller/ValueController.dart';
 import '../_common/flutter/effect/BouncingModalBottomEffect.dart';
+import '../_common/flutter/widget/listTile/MultiSelectListTile.dart';
 import '../_common/flutter/widget/listTile/SwitchInput.dart';
 import '../_common/flutter/widget/listTile/IntListTile.dart';
 import '../_common/flutter/widget/listTile/TextFieldInput.dart';
@@ -76,6 +77,7 @@ class CityPage extends StatelessWidget {
     final capitalController = ValueController<bool>(false);
     final populationController = ValueController<int>(0);
     final regionsController = ValueController<String>(regions[0].value);
+    final regionsController2 = ValueController<List<String>>(regions.sublist(0,2).map((e) => e.value).toList());
 
     BouncingModalBottomEffect.apply(context, builder: (popFunction) {
       return InputBottomSheet(
@@ -94,6 +96,8 @@ class CityPage extends StatelessWidget {
           IntListTile(titleText: "인구수", controller: populationController),
           const SizedBox(height: 10),
           SingleSelectListTile(titleText: "지역", controller: regionsController, choiceItems:regions),
+          const SizedBox(height: 10),
+          MultiSelectListTile(titleText: "지역", controller: regionsController2, choiceItems:regions),
           const SizedBox(height: 10),
         ],
       );
