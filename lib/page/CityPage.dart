@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_awesome_select/flutter_awesome_select.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:try_startup/_common/flutter/widget/listTile/SingleSelectListTile.dart';
 import '../_common/flutter/bottomSheet/AlertBottomSheet.dart';
 import '../_common/flutter/bottomSheet/InputBottomSheet.dart';
 import '../_common/flutter/controller/ValueController.dart';
@@ -60,11 +62,20 @@ class CityPage extends StatelessWidget {
   }
 
   void createBottomSheet() {
+    List<S2Choice<String>> regions = [
+      S2Choice<String>(value: 'and', title: 'Android'),
+      S2Choice<String>(value: 'ios', title: 'IOS'),
+      S2Choice<String>(value: 'mac', title: 'Macintos'),
+      S2Choice<String>(value: 'tux', title: 'Linux'),
+      S2Choice<String>(value: 'win', title: 'Windows'),
+    ];
+
     final nameController = ValueController<String>("");
     final stateController = ValueController<String>("");
     final countryController = ValueController<String>("");
     final capitalController = ValueController<bool>(false);
     final populationController = ValueController<int>(0);
+    final regionsController = ValueController<String>(regions[0].value);
 
     BouncingModalBottomEffect.apply(context, builder: (popFunction) {
       return InputBottomSheet(
@@ -81,6 +92,8 @@ class CityPage extends StatelessWidget {
           SwitchInput(titleText: "수도인지?", controller: capitalController),
           const SizedBox(height: 10),
           IntListTile(titleText: "인구수", controller: populationController),
+          const SizedBox(height: 10),
+          SingleSelectListTile(titleText: "지역", controller: regionsController, choiceItems:regions),
           const SizedBox(height: 10),
         ],
       );
