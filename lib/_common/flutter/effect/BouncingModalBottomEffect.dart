@@ -8,18 +8,19 @@ class BouncingModalBottomEffect extends StatelessWidget {
   Widget Function(Function popFunction) builder;
   late void Function() fastBouncingAnimator;
   late AnimationController animationController;
+  bool useModal;
 
-  BouncingModalBottomEffect(this.builder, {Key? key}) : super(key: key);
+  BouncingModalBottomEffect(this.builder, {Key? key, this.useModal=false}) : super(key: key);
 
   static void apply(
-      BuildContext context, {required Widget Function(Function popFunction) builder}) {
+      BuildContext context, {required Widget Function(Function popFunction) builder, bool useModal=false}) {
     showMaterialModalBottomSheet(
       enableDrag: false,
       bounce: false,
       context: context,
       backgroundColor: Colors.transparent,
       duration: Duration.zero,
-      builder: (context) => BouncingModalBottomEffect(builder),
+      builder: (context) => BouncingModalBottomEffect(builder, useModal:useModal),
     );
   }
 
@@ -31,7 +32,12 @@ class BouncingModalBottomEffect extends StatelessWidget {
         children: [
           Expanded(child: GestureDetector(
             onTap: () {
-              fastBouncingAnimator();
+              if(useModal) {
+                fastBouncingAnimator();
+              }
+              else {
+                popFunction(context);
+              }
             },
           )),
           SlideInUp(

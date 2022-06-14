@@ -64,8 +64,7 @@ class CityPage extends StatelessWidget {
         title: "${r.collectionName} 요소 추가",
         buttonStr: '추가',
         onAdd: (void Function(String) setErrorMessage) {
-          // TODO: BOttomSheet 넣기.
-          // createBottomSheet();
+
         },
         children: [
           ListTile(
