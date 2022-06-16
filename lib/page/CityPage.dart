@@ -193,6 +193,21 @@ class CityPageService {
   final _CityPageState state;
 
   const CityPageService(this.state);
+  Future<void> createCity(
+      void Function(String errorMessage) setErrorMessage) async {
+    _saveCity(setErrorMessage, City(), isAdd: true);
+  }
+
+  Future<void> updateCity(
+      void Function(String errorMessage) setErrorMessage, City city) async {
+    _saveCity(setErrorMessage, city, isAdd: false);
+  }
+
+  void deleteCity(CompletionHandler deleteEffect, City city) async {
+    await deleteEffect(true);
+    await CityRepository.me.delete(documentId: city.documentId);
+    state.rebuild();
+  }
 
   Future<void> _saveCity(void Function(String errorMessage) setErrorMessage, City city,
       {required bool isAdd}) async {
@@ -212,7 +227,7 @@ class CityPageService {
       await AlertBottomSheet.show(
         context,
         alertMessageText:
-            "${state.r.collectionName} 요소 ${isAdd ? "추가" : "수정"}에 성공하였습니다.",
+        "${state.r.collectionName} 요소 ${isAdd ? "추가" : "수정"}에 성공하였습니다.",
         backController: state.alertBottomSheetPopController,
       );
       state.inputBottomSheetPopController.back();
@@ -234,19 +249,4 @@ class CityPageService {
     }
   }
 
-  Future<void> createCity(
-      void Function(String errorMessage) setErrorMessage) async {
-    _saveCity(setErrorMessage, City(), isAdd: true);
-  }
-
-  Future<void> updateCity(
-      void Function(String errorMessage) setErrorMessage, City city) async {
-    _saveCity(setErrorMessage, city, isAdd: false);
-  }
-
-  void deleteCity(CompletionHandler deleteEffect, City city) async {
-    await deleteEffect(true);
-    await CityRepository.me.delete(documentId: city.documentId);
-    state.rebuild();
-  }
 }
