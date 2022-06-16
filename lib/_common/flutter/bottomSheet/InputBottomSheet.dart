@@ -29,7 +29,7 @@ class InputBottomSheet extends StatefulWidget {
     required String buttonStr,
     required List<Widget> children,
     required AddFunctionWithSetErrorMessage onAdd,
-    required PopController popController,
+    required BackController backController,
   }) async {
     await BouncingModalBottomEffect.apply(context, builder: () {
       return InputBottomSheet(
@@ -38,7 +38,7 @@ class InputBottomSheet extends StatefulWidget {
         onAdd: onAdd,
         children: children,
       );
-    }, popController: popController);
+    }, backController: backController);
   }
 }
 

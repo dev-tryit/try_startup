@@ -4,37 +4,37 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'FastBouncingWidgetEffect.dart';
 
-class PopController {
-  late Function popFunction;
+class BackController {
+  late Function back;
 
-  PopController();
+  BackController();
 }
 
 
 class BouncingModalBottomEffect extends StatelessWidget {
-  PopController popController;
+  BackController backController;
   Widget Function() builder;
   late void Function() fastBouncingAnimator;
   late AnimationController animationController;
   bool useModal;
 
-  BouncingModalBottomEffect(this.builder, {Key? key, this.useModal=false, required this.popController}) : super(key: key);
+  BouncingModalBottomEffect(this.builder, {Key? key, this.useModal=false, required this.backController}) : super(key: key);
 
   static Future apply(
-      BuildContext context, {required Widget Function() builder, bool useModal=false, required PopController popController}) async {
+      BuildContext context, {required Widget Function() builder, bool useModal=false, required BackController backController}) async {
     return showMaterialModalBottomSheet(
       enableDrag: false,
       bounce: false,
       context: context,
       backgroundColor: Colors.transparent,
       duration: Duration.zero,
-      builder: (context) => BouncingModalBottomEffect(builder, useModal:useModal, popController:popController),
+      builder: (context) => BouncingModalBottomEffect(builder, useModal:useModal, backController:backController),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    popController.popFunction = ()=>popFunction(context);
+    backController.back = ()=>back(context);
 
     return ColoredBox(
       color: Colors.black.withOpacity(0.35),
@@ -46,7 +46,7 @@ class BouncingModalBottomEffect extends StatelessWidget {
                 fastBouncingAnimator();
               }
               else {
-                popFunction(context);
+                back(context);
               }
             },
           )),
@@ -65,7 +65,7 @@ class BouncingModalBottomEffect extends StatelessWidget {
     );
   }
 
-  void popFunction(BuildContext context) {
+  void back(BuildContext context) {
     animationController.reverse().then((value) {
       Navigator.pop(context);
     });

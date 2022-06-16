@@ -22,8 +22,8 @@ class CityPage extends StatefulWidget {
 }
 
 class _CityPageState extends State<CityPage> {
-  final inputBottomSheetPopController = PopController();
-  final alertBottomSheetPopController = PopController();
+  final inputBottomSheetPopController = BackController();
+  final alertBottomSheetPopController = BackController();
 
   late List<S2Choice<String>> regions;
   late ValueController<String> nameController;
@@ -125,7 +125,7 @@ class _CityPageState extends State<CityPage> {
         ),
         const SizedBox(height: 10),
       ],
-      popController: inputBottomSheetPopController,
+      backController: inputBottomSheetPopController,
     );
   }
 }
@@ -153,21 +153,21 @@ class CityPageService {
       await AlertBottomSheet.show(
         context,
         alertMessageText: "${state.r.collectionName} 요소 추가에 성공하였습니다.",
-        popController: state.alertBottomSheetPopController,
+        backController: state.alertBottomSheetPopController,
       );
-      state.inputBottomSheetPopController.popFunction();
+      state.inputBottomSheetPopController.back();
     } catch (e) {
       if (e is CommonException) {
         await AlertBottomSheet.show(
           context,
           alertMessageText: e.message,
-          popController: state.alertBottomSheetPopController,
+          backController: state.alertBottomSheetPopController,
         );
       } else {
         await AlertBottomSheet.show(
           context,
           alertMessageText: "SystemError : ${e.toString()}",
-          popController: state.alertBottomSheetPopController,
+          backController: state.alertBottomSheetPopController,
         );
       }
     }
