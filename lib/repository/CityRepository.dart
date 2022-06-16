@@ -17,12 +17,12 @@ class CityRepository extends FirebaseRepository<City> {
 }
 
 class City extends FirebaseDTO {
-  final String? name;
-  final String? state;
-  final String? country;
-  final bool? capital;
-  final int? population;
-  final List<String>? regions;
+  String? name;
+  String? state;
+  String? country;
+  bool? capital;
+  int? population;
+  List<String>? regions;
 
   City({
     this.name,

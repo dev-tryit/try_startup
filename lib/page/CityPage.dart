@@ -21,17 +21,23 @@ class CityPage extends StatefulWidget {
 }
 
 class _CityPageState extends State<CityPage> with ReBuilder<CityPage> {
-  final inputBottomSheetPopController = BackController();
-  final alertBottomSheetPopController = BackController();
-
-  late List<S2Choice<String>> regions;
   late ValueController<String> nameController;
   late ValueController<String> stateController;
   late ValueController<String> countryController;
   late ValueController<bool> capitalController;
   late ValueController<int> populationController;
   late ValueController<List<String>> regionsController2;
+
   late CityPageService s;
+  final inputBottomSheetPopController = BackController();
+  final alertBottomSheetPopController = BackController();
+
+  List<S2Choice<String>> regions = [
+    S2Choice<String>(value: 'seoul', title: '서울'),
+    S2Choice<String>(value: 'incheon', title: '인천'),
+    S2Choice<String>(value: 'busan', title: '부산'),
+    S2Choice<String>(value: 'jeju', title: '제주'),
+  ];
 
   CityRepository get r => CityRepository.me;
 
@@ -39,21 +45,6 @@ class _CityPageState extends State<CityPage> with ReBuilder<CityPage> {
   void initState() {
     super.initState();
     s = CityPageService(this);
-
-    regions = [
-      S2Choice<String>(value: 'seoul', title: '서울'),
-      S2Choice<String>(value: 'incheon', title: '인천'),
-      S2Choice<String>(value: 'busan', title: '부산'),
-      S2Choice<String>(value: 'jeju', title: '제주'),
-    ];
-
-    nameController = ValueController<String>("");
-    stateController = ValueController<String>("");
-    countryController = ValueController<String>("");
-    capitalController = ValueController<bool>(false);
-    populationController = ValueController<int>(0);
-    regionsController2 = ValueController<List<String>>(
-        regions.sublist(0, 2).map((e) => e.value).toList());
   }
 
   @override
@@ -104,7 +95,7 @@ class _CityPageState extends State<CityPage> with ReBuilder<CityPage> {
                   ),
                   SwipeAction(
                     title: "수정",
-                    onTap: (h) => updateBottomSheet(h),
+                    onTap: (h) => updateBottomSheet(city),
                     color: Colors.blue,
                   ),
                 ],
@@ -122,6 +113,13 @@ class _CityPageState extends State<CityPage> with ReBuilder<CityPage> {
   }
 
   void createBottomSheet() async {
+    nameController = ValueController<String>("");
+    stateController = ValueController<String>("");
+    countryController = ValueController<String>("");
+    capitalController = ValueController<bool>(false);
+    populationController = ValueController<int>(0);
+    regionsController2 = ValueController<List<String>>([]);
+
     await InputBottomSheet.show(
       context,
       title: "${r.collectionName} 요소 추가",
@@ -152,12 +150,19 @@ class _CityPageState extends State<CityPage> with ReBuilder<CityPage> {
     );
   }
 
-  void updateBottomSheet(CompletionHandler h) async {
+  void updateBottomSheet(City city) async {
+    nameController = ValueController<String>(city.name ?? "");
+    stateController = ValueController<String>(city.state ?? "");
+    countryController = ValueController<String>(city.country ?? "");
+    capitalController = ValueController<bool>(city.capital ?? false);
+    populationController = ValueController<int>(city.population ?? 0);
+    regionsController2 = ValueController<List<String>>(city.regions ?? []);
+
     await InputBottomSheet.show(
       context,
       title: "${r.collectionName} 요소 수정",
       buttonStr: '수정',
-      onAdd: s.updateCity,
+      onAdd: (setErrorMessage)=>s.updateCity(setErrorMessage, city),
       children: [
         TextFieldInput(titleText: "도시 이름", controller: nameController),
         const SizedBox(height: 10),
@@ -189,18 +194,17 @@ class CityPageService {
 
   const CityPageService(this.state);
 
-  Future<void> _saveCity(void Function(String errorMessage) setErrorMessage,
+  Future<void> _saveCity(void Function(String errorMessage) setErrorMessage, City city,
       {required bool isAdd}) async {
     var context = state.context;
 
-    final city = City(
-      name: state.nameController.value,
-      capital: state.capitalController.value,
-      country: state.countryController.value,
-      state: state.stateController.value,
-      population: state.populationController.value,
-      regions: state.regionsController2.value,
-    );
+    city
+      ..name=(state.nameController.value)
+      ..capital=(state.capitalController.value)
+      ..country=(state.countryController.value)
+      ..state=(state.stateController.value)
+      ..population=(state.populationController.value)
+      ..regions=(state.regionsController2.value);
 
     try {
       city.throwInputError();
@@ -232,12 +236,12 @@ class CityPageService {
 
   Future<void> createCity(
       void Function(String errorMessage) setErrorMessage) async {
-    _saveCity(setErrorMessage, isAdd: true);
+    _saveCity(setErrorMessage, City(), isAdd: true);
   }
 
   Future<void> updateCity(
-      void Function(String errorMessage) setErrorMessage) async {
-    _saveCity(setErrorMessage, isAdd: false);
+      void Function(String errorMessage) setErrorMessage, City city) async {
+    _saveCity(setErrorMessage, city, isAdd: false);
   }
 
   void deleteCity(CompletionHandler deleteEffect, City city) async {
