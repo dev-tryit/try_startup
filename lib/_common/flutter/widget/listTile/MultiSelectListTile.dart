@@ -9,12 +9,16 @@ class MultiSelectListTile extends StatefulWidget {
   final ValueController<List<String>> controller;
   final String titleText;
   final List<S2Choice<String>> choiceItems;
+  final bool modalConfirm;
+  final bool modalFilter;
 
   const MultiSelectListTile({
     Key? key,
     required this.titleText,
     required this.controller,
     required this.choiceItems,
+    this.modalConfirm = false,
+    this.modalFilter = false,
   }) : super(key: key);
 
   @override
@@ -31,21 +35,23 @@ class _MultiSelectListTileState extends State<MultiSelectListTile> {
         leading: LeadingTitle(widget.titleText),
         title: SizedBox(
           child: SmartSelect<String>.multiple(
-            title: '',
+            title: widget.titleText,
             selectedValue: widget.controller.value,
             choiceItems: widget.choiceItems,
             onChange: (selected) =>
                 setState(() => widget.controller.value = selected.value),
             modalType: S2ModalType.bottomSheet,
+            modalConfirm: widget.modalConfirm,
+            modalFilter: widget.modalFilter,
             tileBuilder: (context, state) => ListTile(
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text((state.selected.title??[]).join(",")),
+                  Text((state.selected.title ?? []).join(", ")),
                   S2Tile.defaultTrailing,
                 ],
               ),
-              onTap: (){
+              onTap: () {
                 state.showModal();
               },
             ),

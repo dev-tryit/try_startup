@@ -64,11 +64,10 @@ class CityPage extends StatelessWidget {
 
   void createBottomSheet() {
     List<S2Choice<String>> regions = [
-      S2Choice<String>(value: 'and', title: 'Android'),
-      S2Choice<String>(value: 'ios', title: 'IOS'),
-      S2Choice<String>(value: 'mac', title: 'Macintos'),
-      S2Choice<String>(value: 'tux', title: 'Linux'),
-      S2Choice<String>(value: 'win', title: 'Windows'),
+      S2Choice<String>(value: 'seoul', title: '서울'),
+      S2Choice<String>(value: 'incheon', title: '인천'),
+      S2Choice<String>(value: 'busan', title: '부산'),
+      S2Choice<String>(value: 'jeju', title: '제주'),
     ];
 
     final nameController = ValueController<String>("");
@@ -76,8 +75,9 @@ class CityPage extends StatelessWidget {
     final countryController = ValueController<String>("");
     final capitalController = ValueController<bool>(false);
     final populationController = ValueController<int>(0);
-    final regionsController = ValueController<String>(regions[0].value);
-    final regionsController2 = ValueController<List<String>>(regions.sublist(0,2).map((e) => e.value).toList());
+    // final regionsController = ValueController<String>(regions[0].value);
+    final regionsController2 = ValueController<List<String>>(
+        regions.sublist(0, 2).map((e) => e.value).toList());
 
     BouncingModalBottomEffect.apply(context, builder: (popFunction) {
       return InputBottomSheet(
@@ -95,9 +95,14 @@ class CityPage extends StatelessWidget {
           const SizedBox(height: 10),
           IntListTile(titleText: "인구수", controller: populationController),
           const SizedBox(height: 10),
-          SingleSelectListTile(titleText: "지역", controller: regionsController, choiceItems:regions),
-          const SizedBox(height: 10),
-          MultiSelectListTile(titleText: "지역", controller: regionsController2, choiceItems:regions),
+          // SingleSelectListTile(titleText: "지역", controller: regionsController, choiceItems:regions),
+          // const SizedBox(height: 10),
+          MultiSelectListTile(
+            titleText: "지역",
+            controller: regionsController2,
+            choiceItems: regions,
+            modalConfirm: true,
+          ),
           const SizedBox(height: 10),
         ],
       );
