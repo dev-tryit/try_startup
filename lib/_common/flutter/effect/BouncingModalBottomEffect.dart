@@ -15,7 +15,7 @@ class BouncingModalBottomEffect extends StatelessWidget {
   BackController backController;
   Widget Function() builder;
   late void Function() fastBouncingAnimator;
-  late AnimationController animationController;
+  AnimationController? animationController;
   bool useModal;
 
   BouncingModalBottomEffect(this.builder, {Key? key, this.useModal=false, required this.backController}) : super(key: key);
@@ -66,7 +66,7 @@ class BouncingModalBottomEffect extends StatelessWidget {
   }
 
   void back(BuildContext context) {
-    animationController.reverse().then((value) {
+    animationController?.reverse().then((value) {
       Navigator.pop(context);
     });
   }
