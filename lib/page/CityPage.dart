@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_awesome_select/flutter_awesome_select.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:try_startup/_common/flutter/widget/listTile/SingleSelectListTile.dart';
 import '../_common/flutter/bottomSheet/AlertBottomSheet.dart';
 import '../_common/flutter/bottomSheet/InputBottomSheet.dart';
 import '../_common/flutter/controller/ValueController.dart';
@@ -12,7 +10,6 @@ import '../_common/flutter/widget/listTile/IntListTile.dart';
 import '../_common/flutter/widget/listTile/TextFieldInput.dart';
 import '../_common/model/exception/CommonException.dart';
 import '../repository/CityRepository.dart';
-import '../util/SnackBarUtil.dart';
 
 class CityPage extends StatefulWidget {
   CityPage({Key? key}) : super(key: key);
@@ -58,33 +55,36 @@ class _CityPageState extends State<CityPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder<List<City>>(
-        future: r.getList(),
-        builder: (context, snapshot) {
-          bool isDone = snapshot.connectionState == ConnectionState.done;
-          if (!isDone) {
-            return const Center(child: CircularProgressIndicator());
-          }
+    return FutureBuilder<List<City>>(
+      future: r.getList(),
+      builder: (context, snapshot) {
+        bool isDone = snapshot.connectionState == ConnectionState.done;
+        if (!isDone) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-          List<City> cityList = snapshot.data ?? [];
+        FloatingActionButton floatingActionButton = FloatingActionButton(
+            onPressed: createBottomSheet, child: const Icon(Icons.add));
 
-          if (cityList.isEmpty) {
-            return Center(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  FloatingActionButton(
-                      onPressed: createBottomSheet,
-                      child: const Icon(Icons.add)),
-                  const SizedBox(width: 10),
-                  Text("${r.collectionName} 요소를 추가해주세요"),
-                ],
-              ),
-            );
-          }
+        List<City> cityList = snapshot.data ?? [];
 
-          return ListView.builder(
+        if (cityList.isEmpty) {
+          return Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                floatingActionButton,
+                const SizedBox(width: 10),
+                Text("${r.collectionName} 요소를 추가해주세요"),
+              ],
+            ),
+          );
+        }
+
+        return Scaffold(
+          floatingActionButton:
+              cityList.isNotEmpty ? floatingActionButton : null,
+          body: ListView.builder(
             itemCount: cityList.length,
             itemBuilder: (context, index) {
               City city = cityList[index];
@@ -92,9 +92,9 @@ class _CityPageState extends State<CityPage> {
                 title: Text(city.toFirestore().toString()),
               );
             },
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -135,7 +135,8 @@ class CityPageService {
 
   CityPageService(this.state);
 
-  Future<void> createCity(void Function(String errorMessage) setErrorMessage) async {
+  Future<void> createCity(
+      void Function(String errorMessage) setErrorMessage) async {
     var context = state.context;
 
     var city = City(
