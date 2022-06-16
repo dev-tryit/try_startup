@@ -19,15 +19,16 @@ class AlertBottomSheet extends StatelessWidget {
     required String alertMessageText,
     String alertButtonText = '확인',
   }) {
-    BouncingModalBottomEffect.apply(context, builder: (popFunction) {
+    final popController = PopController();
+    BouncingModalBottomEffect.apply(context, builder: () {
       return AlertBottomSheet(
         alertMessageText: alertMessageText,
         alertButtonText: alertButtonText,
         onPressed: () {
-          popFunction();
+          popController.popFunction();
         },
       );
-    });
+    }, popController: popController);
   }
 
   @override

@@ -30,14 +30,15 @@ class InputBottomSheet extends StatefulWidget {
     required List<Widget> children,
     required AddFunctionWithSetErrorMessage onAdd,
   }) {
-    BouncingModalBottomEffect.apply(context, builder: (popFunction) {
+    final popController = PopController();
+    BouncingModalBottomEffect.apply(context, builder: () {
       return InputBottomSheet(
         title: title,
         buttonStr: buttonStr,
         onAdd: onAdd,
         children: children,
       );
-    });
+    }, popController: popController);
   }
 }
 

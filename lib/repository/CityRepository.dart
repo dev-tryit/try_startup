@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:try_startup/_common/firebase/firestore/FirebaseRepository.dart';
 import 'package:try_startup/extension/NullableExtension.dart';
-import 'package:try_startup/extension/NullableStringExtension.dart';
 
 import '../_common/model/exception/CommonException.dart';
 
