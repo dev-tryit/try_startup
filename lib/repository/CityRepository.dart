@@ -25,13 +25,14 @@ class City extends WithDocId {
   final List<String>? regions;
 
   City({
+    int? documentId,
     this.name,
     this.state,
     this.country,
     this.capital,
     this.population,
     this.regions,
-  });
+  }):super(documentId: documentId);
 
   factory City.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -39,6 +40,7 @@ class City extends WithDocId {
   ) {
     final data = snapshot.data();
     return City(
+      documentId: data?['documentId'],
       name: data?['name'],
       state: data?['state'],
       country: data?['country'],
@@ -51,6 +53,7 @@ class City extends WithDocId {
 
   Map<String, dynamic> toFirestore() {
     return {
+      if (documentId != null) "documentId": documentId,
       if (name != null) "name": name,
       if (state != null) "state": state,
       if (country != null) "country": country,

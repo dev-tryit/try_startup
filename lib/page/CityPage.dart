@@ -9,6 +9,7 @@ import '../_common/flutter/widget/listTile/MultiSelectListTile.dart';
 import '../_common/flutter/widget/listTile/SwitchInput.dart';
 import '../_common/flutter/widget/listTile/IntListTile.dart';
 import '../_common/flutter/widget/listTile/TextFieldInput.dart';
+import '../_common/mixin/ReBuilder.dart';
 import '../_common/model/exception/CommonException.dart';
 import '../repository/CityRepository.dart';
 
@@ -19,7 +20,8 @@ class CityPage extends StatefulWidget {
   State<CityPage> createState() => _CityPageState();
 }
 
-class _CityPageState extends State<CityPage> {
+class _CityPageState extends State<CityPage>
+    with ReBuilder<CityPage> {
   final inputBottomSheetPopController = BackController();
   final alertBottomSheetPopController = BackController();
 
@@ -61,7 +63,8 @@ class _CityPageState extends State<CityPage> {
       builder: (context, snapshot) {
         bool isDone = snapshot.connectionState == ConnectionState.done;
         if (!isDone) {
-          return const Center(child: CircularProgressIndicator());
+          return const Scaffold(
+              body: Center(child: CircularProgressIndicator()));
         }
 
         FloatingActionButton floatingActionButton = FloatingActionButton(
@@ -70,14 +73,16 @@ class _CityPageState extends State<CityPage> {
         List<City> cityList = snapshot.data ?? [];
 
         if (cityList.isEmpty) {
-          return Center(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                floatingActionButton,
-                const SizedBox(width: 10),
-                Text("${r.collectionName} 요소를 추가해주세요"),
-              ],
+          return Scaffold(
+            body: Center(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  floatingActionButton,
+                  const SizedBox(width: 10),
+                  Text("${r.collectionName} 요소를 추가해주세요"),
+                ],
+              ),
             ),
           );
         }
@@ -94,7 +99,7 @@ class _CityPageState extends State<CityPage> {
                 trailingActions: [
                   SwipeAction(
                     title: "삭제",
-                    onTap: (h)=>s.deleteCity(h, city, ()=>setState((){})),
+                    onTap: (h) => s.deleteCity(h, city),
                     color: Colors.red,
                   ),
                 ],
@@ -170,6 +175,7 @@ class CityPageService {
         backController: state.alertBottomSheetPopController,
       );
       state.inputBottomSheetPopController.back();
+      state.rebuild();
     } catch (e) {
       if (e is CommonException) {
         await AlertBottomSheet.show(
@@ -187,9 +193,9 @@ class CityPageService {
     }
   }
 
-  void deleteCity(CompletionHandler completionHandler, City city, VoidCallback rebuild) async{
+  void deleteCity(CompletionHandler completionHandler, City city) async {
     await completionHandler(true); //will delete this row
     await CityRepository.me.delete(documentId: city.documentId);
-    rebuild();
+    state.rebuild();
   }
 }
