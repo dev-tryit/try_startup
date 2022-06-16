@@ -26,7 +26,7 @@ class _CityPageState extends State<CityPage> with ReBuilder<CityPage> {
   late ValueController<String> countryController;
   late ValueController<bool> capitalController;
   late ValueController<int> populationController;
-  late ValueController<List<String>> regionsController2;
+  late ValueController<List<String>> regionsController;
 
   late CityPageService s;
   final inputBottomSheetPopController = BackController();
@@ -118,7 +118,7 @@ class _CityPageState extends State<CityPage> with ReBuilder<CityPage> {
     countryController = ValueController<String>("");
     capitalController = ValueController<bool>(false);
     populationController = ValueController<int>(0);
-    regionsController2 = ValueController<List<String>>([]);
+    regionsController = ValueController<List<String>>([]);
 
     await InputBottomSheet.show(
       context,
@@ -140,7 +140,7 @@ class _CityPageState extends State<CityPage> with ReBuilder<CityPage> {
         // const SizedBox(height: 10),
         MultiSelectListTile(
           titleText: "지역",
-          controller: regionsController2,
+          controller: regionsController,
           choiceItems: regions,
           modalConfirm: true,
         ),
@@ -156,7 +156,7 @@ class _CityPageState extends State<CityPage> with ReBuilder<CityPage> {
     countryController = ValueController<String>(city.country ?? "");
     capitalController = ValueController<bool>(city.capital ?? false);
     populationController = ValueController<int>(city.population ?? 0);
-    regionsController2 = ValueController<List<String>>(city.regions ?? []);
+    regionsController = ValueController<List<String>>(city.regions ?? []);
 
     await InputBottomSheet.show(
       context,
@@ -178,7 +178,7 @@ class _CityPageState extends State<CityPage> with ReBuilder<CityPage> {
         // const SizedBox(height: 10),
         MultiSelectListTile(
           titleText: "지역",
-          controller: regionsController2,
+          controller: regionsController,
           choiceItems: regions,
           modalConfirm: true,
         ),
@@ -219,7 +219,7 @@ class CityPageService {
       ..country=(state.countryController.value)
       ..state=(state.stateController.value)
       ..population=(state.populationController.value)
-      ..regions=(state.regionsController2.value);
+      ..regions=(state.regionsController.value);
 
     try {
       city.throwInputError();
