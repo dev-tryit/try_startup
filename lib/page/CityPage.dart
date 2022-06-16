@@ -88,8 +88,10 @@ class _CityPageState extends State<CityPage> {
             itemCount: cityList.length,
             itemBuilder: (context, index) {
               City city = cityList[index];
-              return ListTile(
-                title: Text(city.toFirestore().toString()),
+              return Card(
+                child: ListTile(
+                  title: Text(city.toFirestore().toString()),
+                ),
               );
             },
           ),
