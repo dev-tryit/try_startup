@@ -33,10 +33,10 @@ class _CityPageState extends State<CityPage> with ReBuilder<CityPage> {
   final alertBottomSheetPopController = BackController();
 
   List<S2Choice<String>> regions = [
-    S2Choice<String>(value: 'seoul', title: '서울'),
-    S2Choice<String>(value: 'incheon', title: '인천'),
-    S2Choice<String>(value: 'busan', title: '부산'),
-    S2Choice<String>(value: 'jeju', title: '제주'),
+    S2Choice<String>(value: 'jung-gu', title: '중구'),
+    S2Choice<String>(value: 'dong-gu', title: '동구'),
+    S2Choice<String>(value: 'seo-gu', title: '서구'),
+    S2Choice<String>(value: 'gyeyang-gu', title: '계양구'),
   ];
 
   CityRepository get r => CityRepository.me;
