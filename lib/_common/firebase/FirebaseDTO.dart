@@ -1,8 +1,11 @@
-abstract class WithDocId {
+abstract class FirebaseDTO {
   int? documentId;
 
-  WithDocId({this.documentId});
+  FirebaseDTO({this.documentId});
   
   @override
   bool operator ==(dynamic other) => documentId == other.documentId;
+
+  Map<String, dynamic> toFirestore();
+
 }

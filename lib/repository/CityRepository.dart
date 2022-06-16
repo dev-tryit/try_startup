@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:try_startup/_common/firebase/WithDocId.dart';
+import 'package:try_startup/_common/firebase/FirebaseDTO.dart';
 import 'package:try_startup/_common/firebase/firestore/FirebaseRepository.dart';
 import 'package:try_startup/extension/NullableExtension.dart';
 
@@ -16,7 +16,7 @@ class CityRepository extends FirebaseRepository<City> {
         );
 }
 
-class City extends WithDocId {
+class City extends FirebaseDTO {
   final String? name;
   final String? state;
   final String? country;
@@ -25,14 +25,13 @@ class City extends WithDocId {
   final List<String>? regions;
 
   City({
-    int? documentId,
     this.name,
     this.state,
     this.country,
     this.capital,
     this.population,
     this.regions,
-  }):super(documentId: documentId);
+  }):super(documentId: DateTime.now().microsecondsSinceEpoch);
 
   factory City.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
@@ -40,7 +39,6 @@ class City extends WithDocId {
   ) {
     final data = snapshot.data();
     return City(
-      documentId: data?['documentId'],
       name: data?['name'],
       state: data?['state'],
       country: data?['country'],
@@ -48,7 +46,7 @@ class City extends WithDocId {
       population: data?['population'],
       regions:
           data?['regions'] is Iterable ? List.from(data?['regions']) : null,
-    );
+    )..documentId=data?['documentId'];
   }
 
   Map<String, dynamic> toFirestore() {
