@@ -13,16 +13,47 @@ import '../_common/flutter/widget/listTile/TextFieldInput.dart';
 import '../repository/CityRepository.dart';
 import '../util/SnackBarUtil.dart';
 
-class CityPage extends StatelessWidget {
-  CityRepository get r => CityRepository.me;
-  late BuildContext context;
-
+class CityPage extends StatefulWidget {
   CityPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    this.context = context;
+  State<CityPage> createState() => _CityPageState();
+}
 
+class _CityPageState extends State<CityPage> {
+  late List<S2Choice<String>> regions;
+  late ValueController<String> nameController;
+  late ValueController<String> stateController;
+  late ValueController<String> countryController;
+  late ValueController<bool> capitalController;
+  late ValueController<int> populationController;
+  late ValueController<List<String>> regionsController2;
+  late CityPageService s;
+
+  CityRepository get r => CityRepository.me;
+
+  @override
+  void initState() {
+    s = CityPageService(this);
+
+    regions = [
+      S2Choice<String>(value: 'seoul', title: '서울'),
+      S2Choice<String>(value: 'incheon', title: '인천'),
+      S2Choice<String>(value: 'busan', title: '부산'),
+      S2Choice<String>(value: 'jeju', title: '제주'),
+    ];
+
+    nameController = ValueController<String>("");
+    stateController = ValueController<String>("");
+    countryController = ValueController<String>("");
+    capitalController = ValueController<bool>(false);
+    populationController = ValueController<int>(0);
+    regionsController2 = ValueController<List<String>>(
+        regions.sublist(0, 2).map((e) => e.value).toList());
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder<List<City>>(
         future: r.getList(),
@@ -63,49 +94,55 @@ class CityPage extends StatelessWidget {
   }
 
   void createBottomSheet() {
-    List<S2Choice<String>> regions = [
-      S2Choice<String>(value: 'seoul', title: '서울'),
-      S2Choice<String>(value: 'incheon', title: '인천'),
-      S2Choice<String>(value: 'busan', title: '부산'),
-      S2Choice<String>(value: 'jeju', title: '제주'),
-    ];
+    InputBottomSheet.show(
+      context,
+      title: "${r.collectionName} 요소 추가",
+      buttonStr: '추가',
+      onAdd: s.createCity,
+      children: [
+        TextFieldInput(titleText: "도시 이름", controller: nameController),
+        const SizedBox(height: 10),
+        TextFieldInput(titleText: "상태", controller: stateController),
+        const SizedBox(height: 10),
+        TextFieldInput(titleText: "나라 이름", controller: countryController),
+        const SizedBox(height: 10),
+        SwitchInput(titleText: "수도인지?", controller: capitalController),
+        const SizedBox(height: 10),
+        IntListTile(titleText: "인구수", controller: populationController),
+        const SizedBox(height: 10),
+        // SingleSelectListTile(titleText: "지역", controller: regionsController, choiceItems:regions),
+        // const SizedBox(height: 10),
+        MultiSelectListTile(
+          titleText: "지역",
+          controller: regionsController2,
+          choiceItems: regions,
+          modalConfirm: true,
+        ),
+        const SizedBox(height: 10),
+      ],
+    );
+  }
+}
 
-    final nameController = ValueController<String>("");
-    final stateController = ValueController<String>("");
-    final countryController = ValueController<String>("");
-    final capitalController = ValueController<bool>(false);
-    final populationController = ValueController<int>(0);
-    // final regionsController = ValueController<String>(regions[0].value);
-    final regionsController2 = ValueController<List<String>>(
-        regions.sublist(0, 2).map((e) => e.value).toList());
+class CityPageService {
+  _CityPageState state;
 
-    BouncingModalBottomEffect.apply(context, builder: (popFunction) {
-      return InputBottomSheet(
-        title: "${r.collectionName} 요소 추가",
-        buttonStr: '추가',
-        onAdd: (void Function(String) setErrorMessage) {},
-        children: [
-          TextFieldInput(titleText: "도시 이름", controller: nameController),
-          const SizedBox(height: 10),
-          TextFieldInput(titleText: "상태", controller: stateController),
-          const SizedBox(height: 10),
-          TextFieldInput(titleText: "나라 이름", controller: countryController),
-          const SizedBox(height: 10),
-          SwitchInput(titleText: "수도인지?", controller: capitalController),
-          const SizedBox(height: 10),
-          IntListTile(titleText: "인구수", controller: populationController),
-          const SizedBox(height: 10),
-          // SingleSelectListTile(titleText: "지역", controller: regionsController, choiceItems:regions),
-          // const SizedBox(height: 10),
-          MultiSelectListTile(
-            titleText: "지역",
-            controller: regionsController2,
-            choiceItems: regions,
-            modalConfirm: true,
-          ),
-          const SizedBox(height: 10),
-        ],
-      );
+  CityPageService(this.state);
+
+  void createCity(void Function(String errorMessage) setErrorMessage) {
+    var context = state.context;
+
+    var city = City(
+      name: state.nameController.value,
+      capital: state.capitalController.value,
+      country: state.countryController.value,
+      state: state.stateController.value,
+      population: state.populationController.value,
+      regions: state.regionsController2.value,
+    );
+
+    CityRepository.me.save(city).then((value) {
+      AlertBottomSheet.show(context, alertMessageText: '아이디와 비밀번호가 일치하지 않습니다.');
     });
   }
 }

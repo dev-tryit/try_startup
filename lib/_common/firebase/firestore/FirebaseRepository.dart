@@ -24,20 +24,20 @@ abstract class FirebaseRepository<TargetType> {
   DocumentReference<TargetType> _dRef([String? documentId]) =>
       _cRef().doc(documentId);
 
-  Future<void> save(TargetType targetType,
+  Future<void> save(TargetType instance,
       {String? documentId, SetOptions? options}) async {
-    await _dRef(documentId).set(targetType, options);
+    await _dRef(documentId).set(instance, options);
   }
 
-  Future<void> delete(TargetType targetType, {String? documentId}) async {
+  Future<void> delete(TargetType instance, {String? documentId}) async {
     await _dRef(documentId).delete();
   }
 
   Future<TargetType?> get({String? documentId}) async {
     DocumentSnapshot<TargetType> targetTypeSnapshot =
         await _dRef(documentId).get();
-    TargetType? targetType = targetTypeSnapshot.data();
-    return targetType;
+    TargetType? instance = targetTypeSnapshot.data();
+    return instance;
   }
 
   Future<List<TargetType>> getList({Query<TargetType>? query}) async {

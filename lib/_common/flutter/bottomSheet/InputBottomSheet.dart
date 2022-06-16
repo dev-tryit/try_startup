@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../effect/BouncingModalBottomEffect.dart';
 import '../widget/CircleButton.dart';
 
 typedef AddFunctionWithSetErrorMessage = void Function(
@@ -21,6 +22,23 @@ class InputBottomSheet extends StatefulWidget {
 
   @override
   _InputBottomSheetState createState() => _InputBottomSheetState();
+
+  static void show(
+    BuildContext context, {
+    required String title,
+    required String buttonStr,
+    required List<Widget> children,
+    required AddFunctionWithSetErrorMessage onAdd,
+  }) {
+    BouncingModalBottomEffect.apply(context, builder: (popFunction) {
+      return InputBottomSheet(
+        title: title,
+        buttonStr: buttonStr,
+        onAdd: onAdd,
+        children: children,
+      );
+    });
+  }
 }
 
 class _InputBottomSheetState extends State<InputBottomSheet> {
