@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-abstract class FirebaseRepository<TargetType> {
+import '../WithDocId.dart';
+
+abstract class FirebaseRepository<TargetType extends WithDocId> {
   final String collectionName;
   final FromFirestore<TargetType> fromFirestore;
   final ToFirestore<TargetType> toFirestore;
@@ -26,16 +28,21 @@ abstract class FirebaseRepository<TargetType> {
 
   Future<void> save(TargetType instance,
       {String? documentId, SetOptions? options}) async {
-    await _dRef(documentId).set(instance, options);
+    DocumentReference<TargetType> dRef = _dRef(documentId);
+    documentId = dRef.id;
+
+    instance.documentId = int.tryParse(documentId);
+
+    await dRef.set(instance, options);
   }
 
-  Future<void> delete(TargetType instance, {String? documentId}) async {
-    await _dRef(documentId).delete();
+  Future<void> delete({int? documentId}) async {
+    await _dRef(documentId?.toString()).delete();
   }
 
-  Future<TargetType?> get({String? documentId}) async {
+  Future<TargetType?> get({int? documentId}) async {
     DocumentSnapshot<TargetType> targetTypeSnapshot =
-        await _dRef(documentId).get();
+        await _dRef(documentId?.toString()).get();
     TargetType? instance = targetTypeSnapshot.data();
     return instance;
   }

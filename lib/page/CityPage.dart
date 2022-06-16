@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_awesome_select/flutter_awesome_select.dart';
+import 'package:flutter_swipe_action_cell/core/cell.dart';
 import '../_common/flutter/bottomSheet/AlertBottomSheet.dart';
 import '../_common/flutter/bottomSheet/InputBottomSheet.dart';
 import '../_common/flutter/controller/ValueController.dart';
@@ -88,9 +89,19 @@ class _CityPageState extends State<CityPage> {
             itemCount: cityList.length,
             itemBuilder: (context, index) {
               City city = cityList[index];
-              return Card(
-                child: ListTile(
-                  title: Text(city.toFirestore().toString()),
+              return SwipeActionCell(
+                key: ObjectKey(city),
+                trailingActions: [
+                  SwipeAction(
+                    title: "삭제",
+                    onTap: (h)=>s.deleteCity(h, city, ()=>setState((){})),
+                    color: Colors.red,
+                  ),
+                ],
+                child: Card(
+                  child: ListTile(
+                    title: Text(city.toFirestore().toString()),
+                  ),
                 ),
               );
             },
@@ -174,5 +185,11 @@ class CityPageService {
         );
       }
     }
+  }
+
+  void deleteCity(CompletionHandler completionHandler, City city, VoidCallback rebuild) async{
+    await completionHandler(true); //will delete this row
+    await CityRepository.me.delete(documentId: city.documentId);
+    rebuild();
   }
 }

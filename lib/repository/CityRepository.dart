@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:try_startup/_common/firebase/WithDocId.dart';
 import 'package:try_startup/_common/firebase/firestore/FirebaseRepository.dart';
 import 'package:try_startup/extension/NullableExtension.dart';
 
@@ -15,7 +16,7 @@ class CityRepository extends FirebaseRepository<City> {
         );
 }
 
-class City {
+class City extends WithDocId {
   final String? name;
   final String? state;
   final String? country;
