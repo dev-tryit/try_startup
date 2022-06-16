@@ -20,8 +20,7 @@ class CityPage extends StatefulWidget {
   State<CityPage> createState() => _CityPageState();
 }
 
-class _CityPageState extends State<CityPage>
-    with ReBuilder<CityPage> {
+class _CityPageState extends State<CityPage> with ReBuilder<CityPage> {
   final inputBottomSheetPopController = BackController();
   final alertBottomSheetPopController = BackController();
 
@@ -38,6 +37,7 @@ class _CityPageState extends State<CityPage>
 
   @override
   void initState() {
+    super.initState();
     s = CityPageService(this);
 
     regions = [
@@ -102,6 +102,11 @@ class _CityPageState extends State<CityPage>
                     onTap: (h) => s.deleteCity(h, city),
                     color: Colors.red,
                   ),
+                  SwipeAction(
+                    title: "수정",
+                    onTap: (h) => updateBottomSheet(h),
+                    color: Colors.blue,
+                  ),
                 ],
                 child: Card(
                   child: ListTile(
@@ -146,6 +151,37 @@ class _CityPageState extends State<CityPage>
       backController: inputBottomSheetPopController,
     );
   }
+
+  void updateBottomSheet(CompletionHandler h) async {
+    await InputBottomSheet.show(
+      context,
+      title: "${r.collectionName} 요소 수정",
+      buttonStr: '수정',
+      onAdd: (errorMessage) => s.updateCity(errorMessage, h),
+      children: [
+        TextFieldInput(titleText: "도시 이름", controller: nameController),
+        const SizedBox(height: 10),
+        TextFieldInput(titleText: "상태", controller: stateController),
+        const SizedBox(height: 10),
+        TextFieldInput(titleText: "나라 이름", controller: countryController),
+        const SizedBox(height: 10),
+        SwitchInput(titleText: "수도인지?", controller: capitalController),
+        const SizedBox(height: 10),
+        IntListTile(titleText: "인구수", controller: populationController),
+        const SizedBox(height: 10),
+        // SingleSelectListTile(titleText: "지역", controller: regionsController, choiceItems:regions),
+        // const SizedBox(height: 10),
+        MultiSelectListTile(
+          titleText: "지역",
+          controller: regionsController2,
+          choiceItems: regions,
+          modalConfirm: true,
+        ),
+        const SizedBox(height: 10),
+      ],
+      backController: inputBottomSheetPopController,
+    );
+  }
 }
 
 class CityPageService {
@@ -153,11 +189,16 @@ class CityPageService {
 
   CityPageService(this.state);
 
-  Future<void> createCity(
-      void Function(String errorMessage) setErrorMessage) async {
+  Future<void> _saveCity(
+      void Function(String errorMessage) setErrorMessage,
+      {required bool isAdd, CompletionHandler? completionHandler}) async {
+    if (completionHandler != null) {
+      await completionHandler(true);
+    }
+
     var context = state.context;
 
-    var city = City(
+    final city = City(
       name: state.nameController.value,
       capital: state.capitalController.value,
       country: state.countryController.value,
@@ -171,7 +212,8 @@ class CityPageService {
       await CityRepository.me.save(city);
       await AlertBottomSheet.show(
         context,
-        alertMessageText: "${state.r.collectionName} 요소 추가에 성공하였습니다.",
+        alertMessageText:
+            "${state.r.collectionName} 요소 ${isAdd ? "추가" : "수정"}에 성공하였습니다.",
         backController: state.alertBottomSheetPopController,
       );
       state.inputBottomSheetPopController.back();
@@ -191,6 +233,21 @@ class CityPageService {
         );
       }
     }
+  }
+
+  Future<void> createCity(
+      void Function(String errorMessage) setErrorMessage) async {
+    _saveCity(
+        setErrorMessage,
+        isAdd: true);
+  }
+
+  void updateCity(void Function(String errorMessage) setErrorMessage,
+      CompletionHandler completionHandler) async {
+    _saveCity(
+        setErrorMessage,
+        isAdd: false,
+        completionHandler: completionHandler);
   }
 
   void deleteCity(CompletionHandler completionHandler, City city) async {
