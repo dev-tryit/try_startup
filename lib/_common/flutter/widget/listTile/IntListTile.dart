@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:try_startup/_common/flutter/controller/ValueController.dart';
+import 'package:try_startup/extension/NullableExtension.dart';
 
 import 'leading/LeadingTitle.dart';
 
@@ -22,12 +23,16 @@ class IntListTile extends StatelessWidget {
       minLeadingWidth: 100,
       leading: LeadingTitle(titleText),
       title: TextField(
+        controller: TextEditingController(text: controller.value.toString()),
         keyboardType: TextInputType.number,
         decoration: const InputDecoration(isDense: true),
         textAlign: TextAlign.end,
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly,
-        ], // Only numbers can be entered
+        ],
+        onChanged: (String value) {
+          controller.value = int.tryParse(value) ?? 0;
+        },
       ),
     );
   }

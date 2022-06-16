@@ -21,9 +21,10 @@ class TextFieldInput extends StatelessWidget {
       minLeadingWidth: 100,
       leading: LeadingTitle(titleText),
       title: TextField(
+        controller: TextEditingController(text: controller.value),
         decoration: const InputDecoration(isDense: true),
         textAlign: TextAlign.end,
-        onChanged: (value){
+        onChanged: (value) {
           controller.value = value;
         },
       ),

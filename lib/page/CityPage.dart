@@ -10,6 +10,7 @@ import '../_common/flutter/widget/listTile/MultiSelectListTile.dart';
 import '../_common/flutter/widget/listTile/SwitchInput.dart';
 import '../_common/flutter/widget/listTile/IntListTile.dart';
 import '../_common/flutter/widget/listTile/TextFieldInput.dart';
+import '../_common/model/exception/CommonException.dart';
 import '../repository/CityRepository.dart';
 import '../util/SnackBarUtil.dart';
 
@@ -129,7 +130,7 @@ class CityPageService {
 
   CityPageService(this.state);
 
-  void createCity(void Function(String errorMessage) setErrorMessage) {
+  Future<void> createCity(void Function(String errorMessage) setErrorMessage) async {
     var context = state.context;
 
     var city = City(
@@ -141,8 +142,18 @@ class CityPageService {
       regions: state.regionsController2.value,
     );
 
-    CityRepository.me.save(city).then((value) {
-      AlertBottomSheet.show(context, alertMessageText: '아이디와 비밀번호가 일치하지 않습니다.');
-    });
+    try{
+      city.throwInputError();
+      await CityRepository.me.save(city);
+      AlertBottomSheet.show(context, alertMessageText: "${state.r.collectionName} 요소 추가에 성공하였습니다.");
+    }
+    catch(e) {
+      if(e is CommonException) {
+        AlertBottomSheet.show(context, alertMessageText: e.message);
+      }
+      else {
+        AlertBottomSheet.show(context, alertMessageText: "SystemError : ${e.toString()}");
+      }
+    }
   }
 }

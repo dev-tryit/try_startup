@@ -1,5 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:try_startup/_common/firebase/firestore/FirebaseRepository.dart';
+import 'package:try_startup/extension/NullableExtension.dart';
+import 'package:try_startup/extension/NullableStringExtension.dart';
+
+import '../_common/model/exception/CommonException.dart';
 
 class CityRepository extends FirebaseRepository<City> {
   static final CityRepository me = CityRepository._internal();
@@ -54,5 +58,11 @@ class City {
       if (population != null) "population": population,
       if (regions != null) "regions": regions,
     };
+  }
+
+  void throwInputError() {
+    if(name.isNullOrEmpty) throw CommonException(message: "도시 이름 항목이 비어있습니다.");
+    if(state.isNullOrEmpty) throw CommonException(message: "상태 항목이 비어있습니다.");
+    if(country.isNullOrEmpty) throw CommonException(message: "나라 이름 항목이 비어있습니다.");
   }
 }
