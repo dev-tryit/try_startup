@@ -99,7 +99,7 @@ class _CityPageState extends State<CityPage> with ReBuilder<CityPage> {
                 trailingActions: [
                   SwipeAction(
                     title: "삭제",
-                    onTap: (h) => s.deleteCity(h, city),
+                    onTap: (deleteEffect) => s.deleteCity(deleteEffect, city),
                     color: Colors.red,
                   ),
                   SwipeAction(
@@ -157,7 +157,7 @@ class _CityPageState extends State<CityPage> with ReBuilder<CityPage> {
       context,
       title: "${r.collectionName} 요소 수정",
       buttonStr: '수정',
-      onAdd: (errorMessage) => s.updateCity(errorMessage, h),
+      onAdd: s.updateCity,
       children: [
         TextFieldInput(titleText: "도시 이름", controller: nameController),
         const SizedBox(height: 10),
@@ -185,17 +185,12 @@ class _CityPageState extends State<CityPage> with ReBuilder<CityPage> {
 }
 
 class CityPageService {
-  _CityPageState state;
+  final _CityPageState state;
 
-  CityPageService(this.state);
+  const CityPageService(this.state);
 
-  Future<void> _saveCity(
-      void Function(String errorMessage) setErrorMessage,
-      {required bool isAdd, CompletionHandler? completionHandler}) async {
-    if (completionHandler != null) {
-      await completionHandler(true);
-    }
-
+  Future<void> _saveCity(void Function(String errorMessage) setErrorMessage,
+      {required bool isAdd}) async {
     var context = state.context;
 
     final city = City(
@@ -237,21 +232,16 @@ class CityPageService {
 
   Future<void> createCity(
       void Function(String errorMessage) setErrorMessage) async {
-    _saveCity(
-        setErrorMessage,
-        isAdd: true);
+    _saveCity(setErrorMessage, isAdd: true);
   }
 
-  void updateCity(void Function(String errorMessage) setErrorMessage,
-      CompletionHandler completionHandler) async {
-    _saveCity(
-        setErrorMessage,
-        isAdd: false,
-        completionHandler: completionHandler);
+  Future<void> updateCity(
+      void Function(String errorMessage) setErrorMessage) async {
+    _saveCity(setErrorMessage, isAdd: false);
   }
 
-  void deleteCity(CompletionHandler completionHandler, City city) async {
-    await completionHandler(true); //will delete this row
+  void deleteCity(CompletionHandler deleteEffect, City city) async {
+    await deleteEffect(true);
     await CityRepository.me.delete(documentId: city.documentId);
     state.rebuild();
   }
