@@ -23,15 +23,15 @@ class InputBottomSheet extends StatefulWidget {
   @override
   _InputBottomSheetState createState() => _InputBottomSheetState();
 
-  static void show(
+  static Future<void> show(
     BuildContext context, {
     required String title,
     required String buttonStr,
     required List<Widget> children,
     required AddFunctionWithSetErrorMessage onAdd,
-  }) {
-    final popController = PopController();
-    BouncingModalBottomEffect.apply(context, builder: () {
+    required PopController popController,
+  }) async {
+    await BouncingModalBottomEffect.apply(context, builder: () {
       return InputBottomSheet(
         title: title,
         buttonStr: buttonStr,

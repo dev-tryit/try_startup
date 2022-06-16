@@ -22,6 +22,9 @@ class CityPage extends StatefulWidget {
 }
 
 class _CityPageState extends State<CityPage> {
+  final inputBottomSheetPopController = PopController();
+  final alertBottomSheetPopController = PopController();
+
   late List<S2Choice<String>> regions;
   late ValueController<String> nameController;
   late ValueController<String> stateController;
@@ -82,6 +85,7 @@ class _CityPageState extends State<CityPage> {
           }
 
           return ListView.builder(
+            itemCount: cityList.length,
             itemBuilder: (context, index) {
               City city = cityList[index];
               return ListTile(
@@ -94,8 +98,8 @@ class _CityPageState extends State<CityPage> {
     );
   }
 
-  void createBottomSheet() {
-    InputBottomSheet.show(
+  void createBottomSheet() async {
+    await InputBottomSheet.show(
       context,
       title: "${r.collectionName} 요소 추가",
       buttonStr: '추가',
@@ -121,6 +125,7 @@ class _CityPageState extends State<CityPage> {
         ),
         const SizedBox(height: 10),
       ],
+      popController: inputBottomSheetPopController,
     );
   }
 }
@@ -142,17 +147,28 @@ class CityPageService {
       regions: state.regionsController2.value,
     );
 
-    try{
+    try {
       city.throwInputError();
       await CityRepository.me.save(city);
-      AlertBottomSheet.show(context, alertMessageText: "${state.r.collectionName} 요소 추가에 성공하였습니다.");
-    }
-    catch(e) {
-      if(e is CommonException) {
-        AlertBottomSheet.show(context, alertMessageText: e.message);
-      }
-      else {
-        AlertBottomSheet.show(context, alertMessageText: "SystemError : ${e.toString()}");
+      await AlertBottomSheet.show(
+        context,
+        alertMessageText: "${state.r.collectionName} 요소 추가에 성공하였습니다.",
+        popController: state.alertBottomSheetPopController,
+      );
+      state.inputBottomSheetPopController.popFunction();
+    } catch (e) {
+      if (e is CommonException) {
+        await AlertBottomSheet.show(
+          context,
+          alertMessageText: e.message,
+          popController: state.alertBottomSheetPopController,
+        );
+      } else {
+        await AlertBottomSheet.show(
+          context,
+          alertMessageText: "SystemError : ${e.toString()}",
+          popController: state.alertBottomSheetPopController,
+        );
       }
     }
   }

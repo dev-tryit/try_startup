@@ -14,13 +14,13 @@ class AlertBottomSheet extends StatelessWidget {
       required this.onPressed})
       : super(key: key);
 
-  static void show(
+  static Future<void> show(
     BuildContext context, {
     required String alertMessageText,
     String alertButtonText = '확인',
-  }) {
-    final popController = PopController();
-    BouncingModalBottomEffect.apply(context, builder: () {
+        required PopController popController,
+  }) async {
+    await BouncingModalBottomEffect.apply(context, builder: () {
       return AlertBottomSheet(
         alertMessageText: alertMessageText,
         alertButtonText: alertButtonText,

@@ -20,9 +20,9 @@ class BouncingModalBottomEffect extends StatelessWidget {
 
   BouncingModalBottomEffect(this.builder, {Key? key, this.useModal=false, required this.popController}) : super(key: key);
 
-  static void apply(
-      BuildContext context, {required Widget Function() builder, bool useModal=false, required PopController popController}) {
-    showMaterialModalBottomSheet(
+  static Future apply(
+      BuildContext context, {required Widget Function() builder, bool useModal=false, required PopController popController}) async {
+    return showMaterialModalBottomSheet(
       enableDrag: false,
       bounce: false,
       context: context,
