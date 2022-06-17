@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
 import 'page/CityPage.dart';
+import 'page/MainPage.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: CityPage(),
+      home: MainPage(),
     );
   }
 }
