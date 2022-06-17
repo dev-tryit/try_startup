@@ -4,7 +4,11 @@ import '../repository/PortpolioRepository.dart';
 import '../util/MyImage.dart';
 
 class MainPage extends StatelessWidget {
-  List<Portpolio> portpolioList = [];
+  List<Portpolio> portpolioList = [
+    Portpolio.sample(),
+    Portpolio.sample(),
+    Portpolio.sample(),
+  ];
   MainPage({Key? key}) : super(key: key);
 
   @override
@@ -14,7 +18,7 @@ class MainPage extends StatelessWidget {
         child: CustomScrollView(
           slivers: [
             SliverAppBar(
-              toolbarHeight: 400,
+              toolbarHeight: 120,
               pinned: true,
               elevation: 0,
               title: Row(children: [
@@ -38,6 +42,7 @@ class MainPage extends StatelessWidget {
 
   Widget content() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text("트라잇 프로젝트"),
         Text("트라잇은 고객이 원하는 프로덕트를 만듭니다."),
@@ -48,7 +53,7 @@ class MainPage extends StatelessWidget {
   }
 
   Widget footer() {
-    return Text("footer", style: TextStyle(fontSize: 400));
+    return Text("footer", style: TextStyle(fontSize: 200));
   }
 
   Widget typeSelector() {
@@ -81,18 +86,20 @@ class PortpolioWidget extends StatelessWidget {
   Widget defaultSection() {
     return Row(
       children: [
-        Image(image: MyImage.sampleImage),
-        Column(
-          children: [
-            Text(portpolio.type.toString()),
-            Text(portpolio.name.toString()),
-            Text(portpolio.title.toString()),
-            Text(portpolio.content.toString()),
-            IconButton(
-              icon: Icon(Icons.arrow_downward),
-              onPressed: () {},
-            ),
-          ],
+        Expanded(child: Image(image: MyImage.sampleImage)),
+        Expanded(
+          child: Column(
+            children: [
+              Text(portpolio.type.toString()),
+              Text(portpolio.name.toString()),
+              Text(portpolio.title.toString()),
+              Text(portpolio.content.toString()),
+              IconButton(
+                icon: Icon(Icons.arrow_downward),
+                onPressed: () {},
+              ),
+            ],
+          ),
         ),
       ],
     );
