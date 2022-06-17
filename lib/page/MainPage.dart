@@ -85,6 +85,7 @@ class PortpolioWidget extends StatelessWidget {
         Column(
           children: [
             Text(portpolio.type.toString()),
+            Text(portpolio.name.toString()),
             Text(portpolio.title.toString()),
             Text(portpolio.content.toString()),
             IconButton(
@@ -101,7 +102,13 @@ class PortpolioWidget extends StatelessWidget {
     return AnimatedContainer(
       duration: Duration(milliseconds: 1000),
       height: detailHeight,
-      child: Text("detailSection"),
+      child: Column(
+        children: [
+          Text(portpolio.name.toString()),
+          Text(portpolio.title.toString()),
+          Text(portpolio.content.toString()),
+        ],
+      ),
     );
   }
 }
