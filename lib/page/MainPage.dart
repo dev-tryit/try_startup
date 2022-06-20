@@ -53,7 +53,16 @@ class MainPage extends StatelessWidget {
   }
 
   Widget footer() {
-    return Text("footer", style: TextStyle(fontSize: 200));
+    return Container(
+      height: 300,
+      color: Colors.red,
+      child: Column(
+        children: [
+          topFotter(),
+          bottomFotter(),
+        ],
+      ),
+    );
   }
 
   Widget typeSelector() {
@@ -66,6 +75,34 @@ class MainPage extends StatelessWidget {
   Widget portpolioColumn() {
     return Column(
       children: portpolioList.map((e) => PortpolioWidget(e)).toList(),
+    );
+  }
+
+  Widget topFotter() {
+    return Column(
+      children: [
+        Text("LECLE"),
+        Text("ⓒ LECLE All Right Reserved."),
+      ],
+    );
+  }
+
+  Widget bottomFotter() {
+    return Column(
+      children: [
+        Text("SEOUL, KOREA"),
+        Text("16F HiteJinro, 14 Seochojungang-ro, Seocho-gu, Seoul, Korea"),
+        Text("VIETNAM"),
+        Text("81 Cách Mạng Tháng Tám, Phường Bến Thành, Quận 1, Hồ Chí Minh 700000"),
+        Text("SINGAPORE"),
+        Text("21 Heng Mui Keng Terrace, Singapore 119613"),
+        Text("AUSTIN, USA"),
+        Text("815-A Brazos St. #435 Austin, TX78701"),
+        Text("CONTACT US"),
+        Text("support@lecle.co.kr"),
+        Text("BACKED BY"),
+        Text("이미지1, 이미지2, 이미지3"),
+      ],
     );
   }
 }
