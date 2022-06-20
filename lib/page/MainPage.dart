@@ -14,14 +14,15 @@ class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              toolbarHeight: 120,
-              pinned: true,
-              elevation: 0,
-              title: Row(children: [
+      body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            pinned: true,
+            elevation: 0,
+            toolbarHeight: 600,
+            title: SizedBox(
+              height: 300,
+              child: Row(children: [
                 Text("leading"),
                 Spacer(),
                 Text("menu"),
@@ -29,13 +30,13 @@ class MainPage extends StatelessWidget {
                 Text("action")
               ]),
             ),
-            SliverList(
-                delegate: SliverChildListDelegate([
-              content(),
-              footer(),
-            ])),
-          ],
-        ),
+          ),
+          SliverList(
+              delegate: SliverChildListDelegate([
+            content(),
+            footer(),
+          ])),
+        ],
       ),
     );
   }
@@ -93,7 +94,8 @@ class MainPage extends StatelessWidget {
         Text("SEOUL, KOREA"),
         Text("16F HiteJinro, 14 Seochojungang-ro, Seocho-gu, Seoul, Korea"),
         Text("VIETNAM"),
-        Text("81 Cách Mạng Tháng Tám, Phường Bến Thành, Quận 1, Hồ Chí Minh 700000"),
+        Text(
+            "81 Cách Mạng Tháng Tám, Phường Bến Thành, Quận 1, Hồ Chí Minh 700000"),
         Text("SINGAPORE"),
         Text("21 Heng Mui Keng Terrace, Singapore 119613"),
         Text("AUSTIN, USA"),
