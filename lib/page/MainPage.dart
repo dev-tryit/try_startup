@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../_common/flutter/widget/RowSeparated.dart';
 import '../repository/PortpolioRepository.dart';
 import '../util/MyImage.dart';
 
 class MainPage extends StatelessWidget {
+  bool existBottom = false;
   List<Portpolio> portpolioList = [
     Portpolio.sample(),
     Portpolio.sample(),
@@ -13,23 +15,56 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    PreferredSizeWidget? bottom = existBottom ?PreferredSize(preferredSize: const Size.fromHeight(50),
+      child: Row(
+        children: [
+          Spacer(),
+          Column(
+            children: const [
+              Text("레클소개"),
+              Text("레클뉴스"),
+            ],
+          ),
+          Column(
+            children: const [
+              Text("레클소개"),
+              Text("레클뉴스"),
+            ],
+          ),
+          Column(
+            children: const [
+              Text("레클소개"),
+              Text("레클뉴스"),
+            ],
+          ),
+          Column(
+            children: const [
+              Text("레클소개"),
+              Text("레클뉴스"),
+            ],
+          ),
+          Spacer(),
+        ],
+      ),
+
+    ) : null;
+
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
             pinned: true,
             elevation: 0,
-            toolbarHeight: 600,
-            title: SizedBox(
-              height: 300,
-              child: Row(children: [
-                Text("leading"),
-                Spacer(),
-                Text("menu"),
-                Spacer(),
-                Text("action")
-              ]),
-            ),
+            toolbarHeight: 75,
+            title: Row(children: [
+              Text("leading"),
+              Spacer(),
+              menu(),
+              Spacer(),
+              Text("action")
+            ]),
+            bottom: bottom,
           ),
           SliverList(
               delegate: SliverChildListDelegate([
@@ -81,7 +116,7 @@ class MainPage extends StatelessWidget {
 
   Widget topFotter() {
     return Column(
-      children: [
+      children: const [
         Text("LECLE"),
         Text("ⓒ LECLE All Right Reserved."),
       ],
@@ -90,7 +125,7 @@ class MainPage extends StatelessWidget {
 
   Widget bottomFotter() {
     return Column(
-      children: [
+      children: const [
         Text("SEOUL, KOREA"),
         Text("16F HiteJinro, 14 Seochojungang-ro, Seocho-gu, Seoul, Korea"),
         Text("VIETNAM"),
@@ -105,6 +140,17 @@ class MainPage extends StatelessWidget {
         Text("BACKED BY"),
         Text("이미지1, 이미지2, 이미지3"),
       ],
+    );
+  }
+
+  Widget menu() {
+    return RowSeparated(
+      mainAxisSize: MainAxisSize.min,
+      separatorWidget: const SizedBox(width: 30),
+      items: const <String>["소개", "포트폴리오", "과외","문의"],
+      builder: (String item){
+        return Text(item);
+      },
     );
   }
 }
