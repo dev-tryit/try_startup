@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:try_startup/util/MyColor.dart';
+import 'package:try_startup/util/MyStyle.dart';
 
 import '../_common/flutter/widget/RowSeparated.dart';
 import '../repository/PortpolioRepository.dart';
@@ -57,6 +59,7 @@ class MainPage extends StatelessWidget {
             pinned: true,
             elevation: 0,
             toolbarHeight: 75,
+            backgroundColor: MyColor.pointColor,
             title: Row(children: [
               Text("leading"),
               Spacer(),
@@ -147,9 +150,9 @@ class MainPage extends StatelessWidget {
     return RowSeparated(
       mainAxisSize: MainAxisSize.min,
       separatorWidget: const SizedBox(width: 30),
-      items: const <String>["소개", "포트폴리오", "과외","문의"],
+      items: const <String>["TryIt 소개", "포트폴리오", "Flutter과외","문의"],
       builder: (String item){
-        return Text(item);
+        return Text(item, style: MyStyle.menuTextStyle);
       },
     );
   }
