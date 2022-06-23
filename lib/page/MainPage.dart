@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:try_startup/util/MyColor.dart';
 import 'package:try_startup/util/MyStyle.dart';
+import 'package:try_startup/util/MyWidget.dart';
 
 import '../_common/flutter/widget/RowSeparated.dart';
 import '../repository/PortpolioRepository.dart';
@@ -13,62 +14,51 @@ class MainPage extends StatelessWidget {
     Portpolio.sample(),
     Portpolio.sample(),
   ];
+
   MainPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    PreferredSizeWidget? bottom = existBottom ?PreferredSize(preferredSize: const Size.fromHeight(50),
-      child: Row(
-        children: [
-          Spacer(),
-          Column(
-            children: const [
-              Text("레클소개"),
-              Text("레클뉴스"),
-            ],
-          ),
-          Column(
-            children: const [
-              Text("레클소개"),
-              Text("레클뉴스"),
-            ],
-          ),
-          Column(
-            children: const [
-              Text("레클소개"),
-              Text("레클뉴스"),
-            ],
-          ),
-          Column(
-            children: const [
-              Text("레클소개"),
-              Text("레클뉴스"),
-            ],
-          ),
-          Spacer(),
-        ],
-      ),
-
-    ) : null;
-
+    PreferredSizeWidget? bottom = existBottom
+        ? PreferredSize(
+            preferredSize: const Size.fromHeight(50),
+            child: Row(
+              children: [
+                const Spacer(),
+                Column(
+                  children: const [
+                    Text("레클소개"),
+                    Text("레클뉴스"),
+                  ],
+                ),
+                Column(
+                  children: const [
+                    Text("레클소개"),
+                    Text("레클뉴스"),
+                  ],
+                ),
+                Column(
+                  children: const [
+                    Text("레클소개"),
+                    Text("레클뉴스"),
+                  ],
+                ),
+                Column(
+                  children: const [
+                    Text("레클소개"),
+                    Text("레클뉴스"),
+                  ],
+                ),
+                const Spacer(),
+              ],
+            ),
+          )
+        : null;
 
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar(
-            pinned: true,
-            elevation: 0,
-            toolbarHeight: 75,
-            backgroundColor: MyColor.pointColor,
-            title: Row(children: [
-              Text("leading"),
-              Spacer(),
-              menu(),
-              Spacer(),
-              Text("action")
-            ]),
-            bottom: bottom,
-          ),
+          MyWidget.header(),
           SliverList(
               delegate: SliverChildListDelegate([
             content(),
@@ -83,8 +73,8 @@ class MainPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text("트라잇 프로젝트"),
-        Text("트라잇은 고객이 원하는 프로덕트를 만듭니다."),
+        const Text("트라잇 프로젝트"),
+        const Text("트라잇은 고객이 원하는 프로덕트를 만듭니다."),
         typeSelector(),
         portpolioColumn(),
       ],
@@ -146,21 +136,12 @@ class MainPage extends StatelessWidget {
     );
   }
 
-  Widget menu() {
-    return RowSeparated(
-      mainAxisSize: MainAxisSize.min,
-      separatorWidget: const SizedBox(width: 30),
-      items: const <String>["TryIt 소개", "포트폴리오", "Flutter과외","문의"],
-      builder: (String item){
-        return Text(item, style: MyStyle.menuTextStyle);
-      },
-    );
-  }
 }
 
 class PortpolioWidget extends StatelessWidget {
   double detailHeight = 0;
   Portpolio portpolio;
+
   PortpolioWidget(this.portpolio, {Key? key}) : super(key: key);
 
   @override
@@ -174,7 +155,7 @@ class PortpolioWidget extends StatelessWidget {
   Widget defaultSection() {
     return Row(
       children: [
-        Expanded(child: Image(image: MyImage.sampleImage)),
+        const Expanded(child: Image(image: MyImage.sampleImage)),
         Expanded(
           child: Column(
             children: [
@@ -183,7 +164,7 @@ class PortpolioWidget extends StatelessWidget {
               Text(portpolio.title.toString()),
               Text(portpolio.content.toString()),
               IconButton(
-                icon: Icon(Icons.arrow_downward),
+                icon: const Icon(Icons.arrow_downward),
                 onPressed: () {},
               ),
             ],
@@ -195,7 +176,7 @@ class PortpolioWidget extends StatelessWidget {
 
   Widget detailSection() {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 1000),
       height: detailHeight,
       child: Column(
         children: [
