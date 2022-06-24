@@ -13,7 +13,7 @@ class MyWidget {
       toolbarHeight: 83,
       backgroundColor: MyColor.pointColor,
       title: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 45.0),
+        padding: const EdgeInsets.only(left: 80, right: 80),
         child: Row(children: [
           _headerLogo(),
           const Spacer(),
@@ -29,7 +29,7 @@ class MyWidget {
   static Widget _headerMenu() {
     return RowSeparated(
       mainAxisSize: MainAxisSize.min,
-      separatorWidget: const SizedBox(width: 30),
+      separatorWidget: const SizedBox(width: 60),
       items: const <String>["TryIt 소개", "포트폴리오", "Flutter과외", "문의"],
       builder: (String item) {
         return Text(item, style: MyStyle.menuTextStyle);
@@ -52,13 +52,6 @@ class MyWidget {
   }
 
   static Widget _headerLogo() {
-    return const SizedBox(
-      width: 120,
-      height: 60,
-      child: Image(
-        image: MyImage.logoImage,
-        fit: BoxFit.fill,
-      ),
-    );
+    return MyImage.logoImage;
   }
 }

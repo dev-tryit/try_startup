@@ -42,6 +42,7 @@ dependencies:
   animate_do: ^2.1.0
   flutter_awesome_select: ^6.3.0
   flutter_swipe_action_cell: ^3.0.4
+  flutter_svg: ^1.1.0
 
 dev_dependencies:
   flutter_test:

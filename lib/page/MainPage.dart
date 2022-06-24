@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:try_startup/util/MyColor.dart';
-import 'package:try_startup/util/MyStyle.dart';
+import 'package:try_startup/_common/flutter/widget/RowSeparated.dart';
+import 'package:try_startup/util/ColorUtil.dart';
 import 'package:try_startup/util/MyWidget.dart';
-
-import '../_common/flutter/widget/RowSeparated.dart';
 import '../repository/PortpolioRepository.dart';
 import '../util/MyImage.dart';
+import '../util/MyStyle.dart';
 
 class MainPage extends StatelessWidget {
   bool existBottom = false;
@@ -60,10 +59,16 @@ class MainPage extends StatelessWidget {
         slivers: [
           MyWidget.header(),
           SliverList(
-              delegate: SliverChildListDelegate([
-            content(),
-            footer(),
-          ])),
+            delegate: SliverChildListDelegate(
+              [
+                Padding(
+                  padding: const EdgeInsets.only(left:205, right:205, top: 55, bottom: 60),
+                  child: content()
+                ),
+                footer(),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -73,8 +78,10 @@ class MainPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("트라잇 프로젝트"),
-        const Text("트라잇은 고객이 원하는 프로덕트를 만듭니다."),
+        const Text("트라잇 프로젝트", style: MyStyle.contentHeaderTextStyle),
+        const SizedBox(height: 5),
+        const Text("트라잇은 고객이 원하는 프로덕트를 만듭니다.", style: MyStyle.contentDefaultTextStyle),
+        const SizedBox(height: 90),
         typeSelector(),
         portpolioColumn(),
       ],
@@ -95,9 +102,11 @@ class MainPage extends StatelessWidget {
   }
 
   Widget typeSelector() {
-    return Row(
-      children:
-          ["전체", "프로덕트", "비즈니스", "블록체인", "아웃소싱"].map((e) => Text(e)).toList(),
+    return RowSeparated<String>(
+      mainAxisAlignment: MainAxisAlignment.center,
+      items: const ["전체", "프로덕트", "비즈니스", "블록체인", "아웃소싱"],
+      builder: (item) => Text(item),
+      separatorWidget: const SizedBox(width: 30),
     );
   }
 
@@ -135,7 +144,6 @@ class MainPage extends StatelessWidget {
       ],
     );
   }
-
 }
 
 class PortpolioWidget extends StatelessWidget {
@@ -153,24 +161,27 @@ class PortpolioWidget extends StatelessWidget {
   }
 
   Widget defaultSection() {
-    return Row(
-      children: [
-        const Expanded(child: Image(image: MyImage.sampleImage)),
-        Expanded(
-          child: Column(
-            children: [
-              Text(portpolio.type.toString()),
-              Text(portpolio.name.toString()),
-              Text(portpolio.title.toString()),
-              Text(portpolio.content.toString()),
-              IconButton(
-                icon: const Icon(Icons.arrow_downward),
-                onPressed: () {},
-              ),
-            ],
+    return Container(
+      color: ColorUtil.random(),
+      child: Row(
+        children: [
+          const Expanded(child: Image(image: MyImage.sampleImage)),
+          Expanded(
+            child: Column(
+              children: [
+                Text(portpolio.type.toString()),
+                Text(portpolio.name.toString()),
+                Text(portpolio.title.toString()),
+                Text(portpolio.content.toString()),
+                IconButton(
+                  icon: const Icon(Icons.arrow_downward),
+                  onPressed: () {},
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
